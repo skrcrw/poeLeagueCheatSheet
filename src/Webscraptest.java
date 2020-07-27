@@ -12,7 +12,7 @@ public class Webscraptest {
         try{
             //Here we create a document object and use JSoup to fetch the website
             Document doc = Jsoup.connect("https://poe.trade").get();
-            String[] leagueNames = LeagueNames.getLeagueNames(doc);
+            String[] leagueNames = LeagueNames.getLeagueNames();
             for(String i: leagueNames){
                 System.out.println(i);
             }
