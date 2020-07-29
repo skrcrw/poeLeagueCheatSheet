@@ -9,17 +9,18 @@ public class CurrencyExchange{
     //The following hashmap hold the payload for the post request for each currency type
     private HashMap<String, String> mCurrencyPostPayload = new HashMap<>();
     //The following array holds the list of currency types
-    final private String[] mCurrencyList = {"alt", "fusing", "alch", "gcp", "exalted", "chrome", "jewellers", "chance", "chisel", "scour", "divine", "vaal", "apprentice-sextant", "journeyman-sextant", "master-sextant"};
+    final public String[] mCurrencyList = {"alt", "fusing", "alch", "gcp", "exalted", "chrome", "jewellers", "chance", "chisel", "scour", "divine", "vaal", "apprentice-sextant", "journeyman-sextant", "master-sextant"};
     //This hashmap holds the currency exchange rate
     private ConcurrentHashMap mCurrencyConversion = new ConcurrentHashMap();
 
-    public static void main(String arg[]){
-        for (String i: LeagueNames.getLeagueNames()) {
-            System.out.println(i + " currency conversion rates");
-            new CurrencyExchange(i);
-            System.out.println("\n\n");
-        }
-    }
+//    public static void main(String arg[]){
+//        for (String i: LeagueNames.getLeagueNames()) {
+//            System.out.println(i + " currency conversion rates");
+//            new CurrencyExchange(i);
+//            break;
+//            //System.out.println("\n\n");
+//        }
+//    }
 
     CurrencyExchange(String league){
         loadHashmap();
