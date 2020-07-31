@@ -1,10 +1,10 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 //This will be constructed with a main jpanel where everything goes into
@@ -12,11 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
 //Within these jpanels there will be 2 textfields and 2 jpanels, jpanels will house the icons for the currency and
 //textfield will have the conversion rates
 public class CurrencyUI extends JPanel{
-    CurrencyUI(String[] currencyList, ConcurrentHashMap conversionRates){
-        this.setLayout(new GridLayout(currencyList.length,1));
+    public static final String[] mCurrencyList = {"Orb of Alteration", "Orb of Fusing", "Orb of Alchemy", "Gemcutter's Prism", "Exalted Orb", "Chromatic Orb", "Jeweller's Orb", "Orb of Chance", "Cartographer's Chisel", "Orb of Scouring", "Divine Orb", "Vaal Orb", "Simple Sextant", "Prime Sextant", "Awakened Sextant"};
 
-        for(String i: currencyList){
-            addCurrencyStrip(i, (String) conversionRates.get(i));
+    CurrencyUI(){
+        this.setLayout(new GridLayout(mCurrencyList.length,1));
+
+        for(String i: mCurrencyList){
+            addCurrencyStrip(i, exchangeRate("Harvest").get(i).toString());
             //System.out.println(i+conversionRates.get(i));
         }
     }
@@ -66,5 +68,11 @@ public class CurrencyUI extends JPanel{
         }else{
             return Double.toString(temp);
         }
+    }
+
+    private HashMap<String, Double> exchangeRate(String league){
+        String response = HttpRequest.poeNinjaGetRequest(league, "Currency");
+
+        return HttpRequest.parsePoeNinjaRequest(response, "Currency");
     }
 }

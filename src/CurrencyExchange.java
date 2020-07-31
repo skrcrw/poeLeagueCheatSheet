@@ -5,11 +5,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+//public class CurrencyExchange{
+//    final public static String[] mCurrencyList = {"Orb of Alteration", "Orb of Fusing", "Orb of Alchemy", "Gemcutter's Prism", "Exalted Orb", "Chromatic Orb", "Jeweller's Orb", "Orb of Chance", "Cartographer's Chisel", "Orb of Scouring", "Divine Orb", "Vaal Orb", "Simple Sextant", "Prime Sextant", "Awakened Sextant"};
+//
+//    public static HashMap<String, Double> exchangeRate(String league){
+//        String response = HttpRequest.poeNinjaGetRequest(league, "Currency");
+//
+//        return HttpRequest.parsePoeNinjaRequest(response, "Currency");
+//    }
+//}
+
+//The following code uses pathofexile.com/trade to get currency prices
+//There is now a much faster way to do this using poe.ninja
+/*
 public class CurrencyExchange{
     //The following hashmap hold the payload for the post request for each currency type
     private HashMap<String, String> mCurrencyPostPayload = new HashMap<>();
     //The following array holds the list of currency types
-    final public String[] mCurrencyList = {"alt", "fusing", "alch", "gcp", "exalted", "chrome", "jewellers", "chance", "chisel", "scour", "divine", "vaal", "apprentice-sextant", "journeyman-sextant", "master-sextant"};
+    final public static String[] mCurrencyList = {"alt", "fusing", "alch", "gcp", "exalted", "chrome", "jewellers", "chance", "chisel", "scour", "divine", "vaal", "apprentice-sextant", "journeyman-sextant", "master-sextant"};
     //This hashmap holds the currency exchange rate
     private ConcurrentHashMap mCurrencyConversion = new ConcurrentHashMap();
 
@@ -88,18 +101,18 @@ class MyThread implements Runnable{
         String postRequest, getRequest, searchID, priceMessage;
         ArrayList<String> postRequestParsed, searchItems;
 
-        postRequest = HttpRequest.httpPostRequestJSON(mLeague, mPostPayload, "exchange");
-        postRequestParsed = HttpRequest.parsePostRequest(postRequest);
+        postRequest = HttpRequest.tradePostRequest(mLeague, mPostPayload, "exchange");
+        postRequestParsed = HttpRequest.parseTradePostRequest(postRequest);
         searchID = postRequestParsed.get(0);
         postRequestParsed.remove(0);
         searchItems = postRequestParsed;
 
         if(mLeague.contains("Hardcore")){
-            getRequest = HttpRequest.httpGetRequest(searchID, searchItems.get(0));
+            getRequest = HttpRequest.tradeGetRequest(searchID, searchItems.get(0));
         }else {
-            getRequest = HttpRequest.httpGetRequest(searchID, searchItems.get(19));
+            getRequest = HttpRequest.tradeGetRequest(searchID, searchItems.get(19));
         }
-        priceMessage = HttpRequest.parseGetRequest(getRequest);
+        priceMessage = HttpRequest.parseTradeGetRequest(getRequest);
 
         String[] price = priceMessage.split(" ");
 
@@ -107,3 +120,4 @@ class MyThread implements Runnable{
         System.out.println(priceMessage);
     }
 }
+*/
