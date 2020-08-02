@@ -138,7 +138,13 @@ public class HttpRequest {
     //Sends get request to poe.ninja
     //first letter of both string parameters have to be capital letters
     public static String poeNinjaGetRequest(String league, String type){
-        String url = "https://poe.ninja/api/data/currencyoverview?league=" + league + "&type=" + type + "&language=en";
+        String url = null;
+
+        if(type == "Currency" || type == "currency"){
+            url = "https://poe.ninja/api/data/currencyoverview?league=" + league + "&type=Currency&language=en";
+        }else if(type == "Fossil" || type == "fossil"){
+            url = "https://poe.ninja/api/data/itemoverview?league=" + league + "&type=Fossil&language=en";
+        }
 
         HttpClient client = HttpClient.newHttpClient();
         java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
@@ -163,7 +169,7 @@ public class HttpRequest {
     public static HashMap<String, Double> parsePoeNinjaRequest(String responseBody, String type){
         HashMap <String, Double> prices = new HashMap<>();
 
-        if(type == "Currency"){
+        if(type == "Currency" || type == "currency"){
             //Refer to poeNinjaCurrencyItemCodeFormal.txt for the format of the response of the get request
             JSONArray currencyInfoArray = new JSONObject(responseBody).getJSONArray("lines");
             String currencyName;
@@ -173,6 +179,16 @@ public class HttpRequest {
                 currencyName = currencyInfoArray.getJSONObject(i).getString("currencyTypeName");
                 currencyPrice = currencyInfoArray.getJSONObject(i).getJSONObject("receive").getDouble("value");
                 prices.put(currencyName, currencyPrice);
+            }
+        }else if(type == "Fossil" || type == "fossil"){
+            JSONArray fossilInfoArray = new JSONObject(responseBody).getJSONArray("lines");
+            String fossilName;
+            double fossilPrice;
+
+            for(int i = 0; i < fossilInfoArray.length(); i ++){
+                fossilName = fossilInfoArray.getJSONObject(i).getString("name");
+                fossilPrice = fossilInfoArray.getJSONObject(i).getDouble("chaosValue");
+                prices.put(fossilName, fossilPrice);
             }
         }
 

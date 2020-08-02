@@ -1,0 +1,38 @@
+{
+	"id":20445,
+	"name":"Fractured Fossil",
+	"icon":"https://web.poecdn.com/image/Art/2DItems/Currency/Delve/FracturedFossil.png?v=11a6519b4c00c8660d5df8f19e692976&w=1&h=1&scale=1",
+	"mapTier":0,
+	"levelRequired":0,
+	"baseType":null,
+	"stackSize":10,
+	"variant":null,
+	"prophecyText":null,
+	"artFilename":null,
+	"links":0,
+	"itemClass":5,
+	"sparkline":{
+		"data":[0.0,1.02,-8.75,-4.53,-4.41,-6.09,-4.98],
+		"totalChange":-4.98
+	},
+	"lowConfidenceSparkline":{
+		"data":[0.0,1.02,-8.75,-4.53,-4.41,-6.09,-4.98],
+		"totalChange":-4.98
+	},
+	"implicitModifiers":[],
+	"explicitModifiers":[{
+		"text":"Creates a mirrored copy",
+		"optional":false
+	}],
+	"flavourText":"",
+	"corrupted":false,
+	"gemLevel":0,
+	"gemQuality":0,
+	"itemType":"Unknown",
+	"chaosValue":277.36,
+	"exaltedValue":2.00,
+	"count":99,
+	"detailsId":"fractured-fossil",
+	"tradeInfo":null,
+	"mapRegion":null
+}
