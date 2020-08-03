@@ -1,23 +1,31 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FossilUI extends JPanel {
+public class FossilUI extends JPanel{
     public static final String[] mFossilList= {"Fractured Fossil","Faceted Fossil","Glyphic Fossil","Hollow Fossil","Enchanted Fossil","Perfect Fossil","Sanctified Fossil","Bloodstained Fossil","Gilded Fossil","Bound Fossil","Corroded Fossil",
             "Shuddering Fossil","Tangled Fossil","Encrusted Fossil","Dense Fossil","Lucent Fossil","Jagged Fossil","Aetheric Fossil","Aberrant Fossil","Scorched Fossil","Frigid Fossil","Metallic Fossil","Prismatic Fossil","Pristine Fossil","Serrated Fossil"};
     public static String[] mSortedFossilList;
     private JPanel mColumn1 = new JPanel();
     private JPanel mColumn2 = new JPanel();
+    private String mLeague;
 
     public static void main(String[] args) {
     }
 
     FossilUI(String league){
-        HashMap<String, Double> price = exchangeRate(league);
+        mLeague = league;
+        HashMap<String, Double> price = exchangeRate(mLeague);
         int n = 1;
 
         this.setLayout(new GridLayout(1,2));
@@ -49,9 +57,25 @@ public class FossilUI extends JPanel {
 
         JLabel chaosIcon = new JLabel(new ImageIcon(chaosImage));
         chaosIcon.setToolTipText("Chaos Orb");
-        JLabel fossilIcon = new JLabel(new ImageIcon(fossilImage));
-        fossilIcon.setToolTipText(fossil);
 
+        JLabel fossilIcon = new JLabel(new ImageIcon(fossilImage));
+        fossilIcon.setToolTipText("<html>" + fossil + "<br>Click to search this fossil on the official trade site</html>");
+        fossilIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event){
+                String response = HttpRequest.tradePostRequest(mLeague, "{\"exchange\":{\"status\":{\"option\":\"online\"},\"have\":[\"chaos\"],\"want\":[\"" + fossil.split(" ")[0] + "-fossil\"]}}", "exchange");
+                String searchId = HttpRequest.parseTradePostRequest(response).get(0);
+
+                try {
+                    Desktop.getDesktop().browse(new URI("https://www.pathofexile.com/trade/exchange/" + mLeague + "/" + searchId));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        
         container.add(fossilText);
         container.add(fossilIcon);
         container.add(chaos);

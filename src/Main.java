@@ -4,86 +4,86 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Main implements ActionListener{
-    public JFrame mainWindow;
-    JPanel mainPanel, buttonPanel, currencyUI, fossilUI;
-    JButton currency, fossil, betrayal, temple;
-    String currentUI = "currency", currentLeague;
-    JLabel loadingIcon;
+    public JFrame mMainWindow;
+    JPanel mMainPanel, mButtonPanel, mCurrencyUI, mFossilUI;
+    JButton mCurrency, mFossil, mBetrayal, mTemple;
+    String mCurrentDisplay = "currency", mCurrentLeague;
+    JLabel mLoadingIcon;
 
     public static void main(String arg[]){
         new Main();
     }
 
     Main(){
-        currentLeague = LeagueNames.getLeagueNames()[0];
+        mCurrentLeague = LeagueNames.getLeagueNames()[0];
 
-        mainWindow = new JFrame("League Cheat Sheet");
-        mainPanel = new JPanel();
+        mMainWindow = new JFrame("League Cheat Sheet");
+        mMainPanel = new JPanel();
 
         ImageIcon loadingGif = new ImageIcon("assets/ajax-loader.gif");
-        loadingIcon = new JLabel(loadingGif, JLabel.CENTER);
+        mLoadingIcon = new JLabel(loadingGif, JLabel.CENTER);
 
-        mainWindow.setSize(800,60 * CurrencyUI.mCurrencyList.length);
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainWindow.add(mainPanel);
+        mMainWindow.setSize(800,60 * CurrencyUI.mCurrencyList.length);
+        mMainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mMainWindow.add(mMainPanel);
 
-        mainPanel.add(buttonPanel());
-        mainPanel.add(loadingIcon);
+        mMainPanel.add(buttonPanel());
+        mMainPanel.add(mLoadingIcon);
 
-        mainWindow.setVisible(true);
+        mMainWindow.setVisible(true);
 
-        currencyUI = new CurrencyUI(currentLeague);
+        mCurrencyUI = new CurrencyUI(mCurrentLeague);
 
-        mainPanel.add(currencyUI);
-        mainPanel.remove(loadingIcon);
-        mainWindow.revalidate();
+        mMainPanel.add(mCurrencyUI);
+        mMainPanel.remove(mLoadingIcon);
+        mMainWindow.revalidate();
     }
 
     public JPanel buttonPanel(){
-        buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4,1));
-        currency = new JButton("Currency");
-        currency.addActionListener(this);
-        fossil = new JButton("Fossil");
-        fossil.addActionListener(this);
-        betrayal = new JButton("Betrayal");
-        temple = new JButton("Temple");
-        buttonPanel.add(currency);
-        buttonPanel.add(betrayal);
-        buttonPanel.add(fossil);
-        buttonPanel.add(temple);
+        mButtonPanel = new JPanel();
+        mButtonPanel.setLayout(new GridLayout(4,1));
+        mCurrency = new JButton("Currency");
+        mCurrency.addActionListener(this);
+        mFossil = new JButton("Fossil");
+        mFossil.addActionListener(this);
+        mBetrayal = new JButton("Betrayal");
+        mTemple = new JButton("Temple");
+        mButtonPanel.add(mCurrency);
+        mButtonPanel.add(mBetrayal);
+        mButtonPanel.add(mFossil);
+        mButtonPanel.add(mTemple);
 
-        return buttonPanel;
+        return mButtonPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         JComponent source = (JComponent) actionEvent.getSource();
 
-        if(source == currency){
-            if(currentUI == "currency"){
-                mainPanel.remove(currencyUI);
-            }else if(currentUI == "fossil"){
-                mainPanel.remove(fossilUI);
+        if(source == mCurrency){
+            if(mCurrentDisplay == "currency"){
+                mMainPanel.remove(mCurrencyUI);
+            }else if(mCurrentDisplay == "fossil"){
+                mMainPanel.remove(mFossilUI);
             }
 
-            currencyUI = new CurrencyUI(currentLeague);
-            mainPanel.add(currencyUI);
-            mainWindow.revalidate();
-            mainWindow.repaint();
-            currentUI = "currency";
-        }else if(source == fossil){
-            if(currentUI == "currency"){
-                mainPanel.remove(currencyUI);
-            }else if(currentUI == "fossil"){
-                mainPanel.remove(fossilUI);
+            mCurrencyUI = new CurrencyUI(mCurrentLeague);
+            mMainPanel.add(mCurrencyUI);
+            mMainWindow.revalidate();
+            mMainWindow.repaint();
+            mCurrentDisplay = "currency";
+        }else if(source == mFossil){
+            if(mCurrentDisplay == "currency"){
+                mMainPanel.remove(mCurrencyUI);
+            }else if(mCurrentDisplay == "fossil"){
+                mMainPanel.remove(mFossilUI);
             }
 
-            fossilUI = new FossilUI(currentLeague);
-            mainPanel.add(fossilUI);
-            mainWindow.revalidate();
-            mainWindow.repaint();
-            currentUI = "fossil";
+            mFossilUI = new FossilUI(mCurrentLeague);
+            mMainPanel.add(mFossilUI);
+            mMainWindow.revalidate();
+            mMainWindow.repaint();
+            mCurrentDisplay = "fossil";
         }
     }
 }
