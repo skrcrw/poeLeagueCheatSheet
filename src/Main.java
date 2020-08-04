@@ -1,16 +1,19 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class Main implements ActionListener{
     public JFrame mMainWindow;
     JPanel mMainPanel, mButtonPanel, mCurrencyUI, mFossilUI;
-    JButton mCurrency, mFossil, mBetrayal, mTemple;
+    JButton mCurrencyButton, mFossilButton, mBetrayalButton, mTempleButton;
     String mCurrentDisplay = "currency", mCurrentLeague;
     JLabel mLoadingIcon;
 
-    public static void main(String arg[]){
+    public static void main(String[] arg){
         new Main();
     }
 
@@ -42,16 +45,35 @@ public class Main implements ActionListener{
     public JPanel buttonPanel(){
         mButtonPanel = new JPanel();
         mButtonPanel.setLayout(new GridLayout(4,1));
-        mCurrency = new JButton("Currency");
-        mCurrency.addActionListener(this);
-        mFossil = new JButton("Fossil");
-        mFossil.addActionListener(this);
-        mBetrayal = new JButton("Betrayal");
-        mTemple = new JButton("Temple");
-        mButtonPanel.add(mCurrency);
-        mButtonPanel.add(mBetrayal);
-        mButtonPanel.add(mFossil);
-        mButtonPanel.add(mTemple);
+
+        mCurrencyButton = new JButton("Currency");
+        mCurrencyButton.addActionListener(this);
+        mCurrencyButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        mFossilButton = new JButton("Fossil");
+        mFossilButton.addActionListener(this);
+        mFossilButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        mBetrayalButton = new JButton("Betrayal");
+        mBetrayalButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        mTempleButton = new JButton("Temple");
+        mTempleButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        try {
+            Image currencyIcon = ImageIO.read(new File("assets/currency/Mirror of Kalandra.png"));
+            Image fossilIcon = ImageIO.read(new File("assets/fossil/Serrated Fossil.png"));
+
+            mCurrencyButton.setIcon(new ImageIcon(currencyIcon));
+            mFossilButton.setIcon(new ImageIcon(fossilIcon));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mButtonPanel.add(mCurrencyButton);
+        mButtonPanel.add(mBetrayalButton);
+        mButtonPanel.add(mFossilButton);
+        mButtonPanel.add(mTempleButton);
 
         return mButtonPanel;
     }
@@ -60,10 +82,10 @@ public class Main implements ActionListener{
     public void actionPerformed(ActionEvent actionEvent) {
         JComponent source = (JComponent) actionEvent.getSource();
 
-        if(source == mCurrency){
-            if(mCurrentDisplay == "currency"){
+        if(source == mCurrencyButton){
+            if(mCurrentDisplay.equals("currency")){
                 mMainPanel.remove(mCurrencyUI);
-            }else if(mCurrentDisplay == "fossil"){
+            }else if(mCurrentDisplay.equals("fossil")){
                 mMainPanel.remove(mFossilUI);
             }
 
@@ -72,10 +94,10 @@ public class Main implements ActionListener{
             mMainWindow.revalidate();
             mMainWindow.repaint();
             mCurrentDisplay = "currency";
-        }else if(source == mFossil){
-            if(mCurrentDisplay == "currency"){
+        }else if(source == mFossilButton){
+            if(mCurrentDisplay.equals("currency")){
                 mMainPanel.remove(mCurrencyUI);
-            }else if(mCurrentDisplay == "fossil"){
+            }else if(mCurrentDisplay.equals("fossil")){
                 mMainPanel.remove(mFossilUI);
             }
 

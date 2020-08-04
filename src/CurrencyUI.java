@@ -1,9 +1,13 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 //This will be constructed with a main jpanel where everything goes into
@@ -14,9 +18,15 @@ public class CurrencyUI extends JPanel{
     public static final String[] mCurrencyList = {"Mirror of Kalandra","Orb of Alteration","Orb of Fusing","Orb of Alchemy","Gemcutter's Prism","Exalted Orb","Chromatic Orb","Jeweller's Orb","Orb of Chance","Cartographer's Chisel","Orb of Scouring",
             "Divine Orb","Vaal Orb","Simple Sextant","Prime Sextant","Awakened Sextant"};
     public static String[] mSortedCurrencyList;
+    //This maps the poe.ninja currency names into equivalent names used by the official trade site
+    private HashMap<String, String> mNameConversion = new HashMap<>();
+    private String mLeague;
+
 
     CurrencyUI(String league){
+        mLeague = league;
         HashMap<String, Double> price = exchangeRate(league);
+        createNameConversion();
 
         this.setLayout(new GridLayout(mCurrencyList.length,1));
         mSortedCurrencyList = MiscAlgorithms.sortByPrice(price, mCurrencyList);
@@ -43,6 +53,27 @@ public class CurrencyUI extends JPanel{
         chaosIcon.setToolTipText("Chaos Orb");
         JLabel currencyIcon = new JLabel(new ImageIcon(currencyImage));
         currencyIcon.setToolTipText(currency);
+        currencyIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                String response;
+
+                if(currency == "Mirror of Kalandra") {
+                    response = HttpRequest.tradePostRequest(mLeague, "{\"exchange\":{\"status\":{\"option\":\"online\"},\"have\":[\"exalted\"],\"want\":[\"mirror\"]}}", "exchange");
+                }else{
+                    response = HttpRequest.tradePostRequest(mLeague, "{\"exchange\":{\"status\":{\"option\":\"online\"},\"have\":[\"chaos\"],\"want\":[\"" + mNameConversion.get(currency) + "\"]}}", "exchange");
+                }
+                String searchId = HttpRequest.parseTradePostRequest(response).get(0);
+
+                try {
+                    Desktop.getDesktop().browse(new URI("https://www.pathofexile.com/trade/exchange/" + mLeague + "/" + searchId));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         container.add(convertedCurrency);
         container.add(currencyIcon);
@@ -69,5 +100,13 @@ public class CurrencyUI extends JPanel{
         String response = HttpRequest.poeNinjaGetRequest(league, "Currency");
 
         return HttpRequest.parsePoeNinjaRequest(response, "Currency");
+    }
+
+    private void createNameConversion(){
+        String[] convertedName = {"mirror","alt","fusing","alch","gcp","exalted","chrome","jewellers","chance","chisel","scour","divine","vaal","apprentice-sextant","journeyman-sextant","master-sextant"};
+
+        for (int i = 0; i < convertedName.length; i ++){
+            mNameConversion.put(mCurrencyList[i], convertedName[i]);
+        }
     }
 }

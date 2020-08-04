@@ -22,7 +22,7 @@ public class CurrencyExchange{
     //The following hashmap hold the payload for the post request for each currency type
     private HashMap<String, String> mCurrencyPostPayload = new HashMap<>();
     //The following array holds the list of currency types
-    final public static String[] mCurrencyList = {"alt", "fusing", "alch", "gcp", "exalted", "chrome", "jewellers", "chance", "chisel", "scour", "divine", "vaal", "apprentice-sextant", "journeyman-sextant", "master-sextant"};
+    final public static String[] mCurrencyList = {"alt", "fusing", "alch", "gcp", "exalted", "chrome", "jewellers", "chance", "chisel", "scour", "divine", "vaal", "apprentice-sextant", "journeyman-sextant", "master-sextant", "mirror"};
     //This hashmap holds the currency exchange rate
     private ConcurrentHashMap mCurrencyConversion = new ConcurrentHashMap();
 
